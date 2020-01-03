@@ -54,7 +54,9 @@ int TextWriter::InputString(const string& input)
 
 int TextWriter::WriteChar()
 {
-	if (_isKeyWait)
+
+	if (_isKeyWait ||
+	IsStreamEmpty())
 	{
 		if (CheckHitKeyAll())
 		{
@@ -63,15 +65,9 @@ int TextWriter::WriteChar()
 	}
 	else
 	{
-		ReadControl(Text[_rowIndex][_columnIndex]);
-		if (Text[_rowIndex][_columnIndex] == '\0')
-		{
-			_rowIndex++;
-			_columnIndex = 0;
-		}
+		ReadControl();
 	}
 
-	//_timeCounter = 2;
 	OutputChar();
 
 	return 0;
@@ -93,59 +89,66 @@ TextWriter& TextWriter::operator<<(const string& str)
 
 // protected
 
-int TextWriter::ReadControl(char target)
+int TextWriter::InsertChar2Buffer(void)
 {
-	switch (target)
+	int bytes = GetCharBytes(
+		DX_CHARCODEFORMAT_SHIFTJIS,
+		&_stringStream[0]
+	);
+
+	for (size_t i = 0; i < bytes; i++)
+	{
+		_stringBuffer[_drawPositionY][_drawPositionX+i] =
+			_stringStream[i];
+	}
+	_drawPositionX+=bytes;
+
+	return 0;
+}
+
+int TextWriter::ReadControl(void)
+{
+	int bytes;
+	switch (_stringStream[0]) // ストリームの先頭を参照
 	{
 	case ControlChar_Return:
 		ReturnText();
-		_columnIndex++;
+		bytes = 1;
 		break;
 
 	case ControlChar_KeyWait:
 		_isKeyWait = TRUE;
-		_columnIndex++;
+		bytes = 1;
 		break;
 
 	case ControlChar_End:
 		_isComplete = TRUE;
-		_columnIndex++;
+		bytes = 1;
 		break;
 
 	case ControlChar_Clear:
 		ClearStringBuffer();
 		_drawPositionX = 0;
 		_drawPositionY = 0;
-		_columnIndex++;
+		bytes = 1;
 		break;
 
 	default:
-		Insert2Buffer();
+		// Insert2Buffer();
+		InsertChar2Buffer();
+		bytes = GetCurrentCharBytes();
 		if (_drawPositionX >= STRBUF_WIDTH)
 		{
 			ReturnText();
 		}
 		break;
 	}
+
+	PushStringStream(bytes);
 	return 0;
 }
 
-int TextWriter::Insert2Buffer(void)
-{
-	int bytes = GetCharBytes(
-		DX_CHARCODEFORMAT_SHIFTJIS, 
-		&Text[_rowIndex][_columnIndex]);
 
-	for (size_t i = 0; i < bytes; i++)
-	{
-		_stringBuffer[_drawPositionY][_drawPositionX + i] =
-			Text[_rowIndex][_columnIndex + i];
-	}
-	_columnIndex += bytes;
-	_drawPositionX += bytes;
-
-	return 0;
-}
 
 int TextWriter::OutputChar(void)
 {
@@ -190,4 +193,36 @@ int TextWriter::ClearStringBuffer(void)
 	}
 
 	return 0;
+}
+
+int TextWriter::PushStringStream(int num)
+{
+	for (size_t i = 0; i < num; i++)
+	{
+		_stringStream.erase(_stringStream.begin()+0);
+	}
+
+	return 0;
+}
+
+int TextWriter::GetCurrentCharBytes(void)
+{
+	int bytes = GetCharBytes(
+		DX_CHARCODEFORMAT_SHIFTJIS,
+		&_stringStream[0]
+	);
+
+	return bytes;
+}
+
+int TextWriter::IsStreamEmpty(void)
+{
+	if(_stringStream.size()<=0)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }

@@ -27,7 +27,7 @@
 				"-I",
 				".",
 				"-DDX_GCC_COMPILE",
-				"-DDX_NON_INLINE_ASM"
+				"-DDX_NON_INLINE_ASM",
 			],
 			"problemMatcher": [
 				"$gcc"

@@ -19,25 +19,7 @@
 			"intelliSenseMode": "gcc-x86",
 			"compilerArgs": [
 				"-DDX_GCC_COMPILE",
-				"-DDX_NON_INLINE_ASM",
-				"-lDxLib",
-				"-lDxUseCLib",
-				"-lDxDrawFunc",
-				"-ljpeg",
-				"-lpng",
-				"-lzlib",
-				"-ltiff",
-				"-ltheora_static",
-				"-lvorbis_static",
-				"-lvorbisfile_static",
-				"-logg_static",
-				"-lbulletdynamics",
-				"-lbulletcollision",
-				"-lbulletmath",
-				"-lopusfile",
-				"-lopus",
-				"-lsilk_common",
-				"-lcelt"
+				"-DDX_NON_INLINE_ASM"
 			]
 		}
 	],

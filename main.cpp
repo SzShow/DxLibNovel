@@ -7,7 +7,7 @@
 using namespace std;
 
 string str =
-	"ｹﾞｰﾑﾌﾟﾛｸﾞﾗﾑを習得するための一番の近道はとにかく沢山ﾌﾟﾛｸﾞﾗﾑを組むことである";
+	"　ｹﾞｰﾑﾌﾟﾛｸﾞﾗﾑを習得するための一番の近道はとにかく沢山ﾌﾟﾛｸﾞﾗﾑを組むことであるBE";
 
 int initialize(void)
 {
@@ -19,6 +19,7 @@ int initialize(void)
 		return -1;
 	}
 	SetDrawScreen(DX_SCREEN_BACK);
+	return 0;
 }
 
 int loop(void)

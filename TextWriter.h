@@ -30,18 +30,21 @@ public:
 	TextWriter& operator<<(const std::string& str);
 
 protected:
-	int PickupNextChar();
-	int ReadControl(char target);
-	int Insert2Buffer(void);
+	int InsertChar2Buffer(void);
+	int ReadControl(void);
 	int OutputChar(void);
 	int ReturnText(void);
 
 	int ClearStringBuffer(void);
+	int PushStringStream(int num);
+
+	int GetCurrentCharBytes(void);
+	int IsStreamEmpty(void);
 
 protected:
 	char _charBuffer[3];
 	char _stringBuffer[STRBUF_HEIGHT][STRBUF_WIDTH*2+1];
-	std::string _stringStream;
+	std::string _stringStream;	//Œã‚Å\‘¢‘Ì‚É‚·‚éH
 
 	int _isComplete;
 	int _isKeyWait;
