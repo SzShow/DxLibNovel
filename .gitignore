@@ -19,6 +19,7 @@ syntax:glob
 *.ilk
 *.log
 *.zip
+*.o
 [Dd]ebug*/
 *.lib
 *.sbr

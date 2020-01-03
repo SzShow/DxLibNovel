@@ -2,19 +2,71 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "build hello world",
-			"type": "shell",
-			"command": "g++",
-			"args": [
-				"-g",
-				"-o",
-				"helloworld",
-				"helloworld.cpp"
-			],
+			"label": "build",
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			}
+			},
+			"dependsOn": [
+				"compile",
+				"link"
+			],
+			"dependsOrder": "sequence"
+		},
+		{
+			"label": "compile",
+			"type": "shell",
+			"command": "g++.exe",
+			"args": [
+				"-g",
+				"-c",
+				"main.cpp",
+				"TextWriter.cpp",
+				"-I/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/include",
+				"-I/8_1_0_i686_w64_posix_dwarf_rt_v6_rev0",
+				"-I",
+				".",
+				"-DDX_GCC_COMPILE",
+				"-DDX_NON_INLINE_ASM"
+			],
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"label": "link",
+			"type": "shell",
+			"command": "g++",
+			"args": [
+				"main.o",
+				"TextWriter.o",
+				"-mwindows",
+				"-L/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/lib",
+				"-L/8_1_0_i686_w64_posix_dwarf_rt_v6_rev0",
+				"-lDxLib",
+				"-lDxUseCLib",
+				"-lDxDrawFunc",
+				"-ljpeg",
+				"-lpng",
+				"-lzlib",
+				"-ltiff",
+				"-ltheora_static",
+				"-lvorbis_static",
+				"-lvorbisfile_static",
+				"-logg_static",
+				"-lbulletdynamics",
+				"-lbulletcollision",
+				"-lbulletmath",
+				"-lopusfile",
+				"-lopus",
+				"-lsilk_common",
+				"-lcelt",
+				"-o",
+				"test.exe"
+			],
+			"problemMatcher": [
+				"$gcc"
+			]
 		}
 	]
 }
